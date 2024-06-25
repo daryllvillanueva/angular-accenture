@@ -1,7 +1,4 @@
-import { Component, Input, computed, signal} from '@angular/core';
-import { DUMMY_USERS } from '../dummy-users';
-
-// const randomIndex = Math.floor(Math.random() * DUMMY_USERS.length);
+import { Component, EventEmitter, Input, Output, computed, input, signal, output} from '@angular/core';
 
 @Component({
   selector: 'app-user',
@@ -11,20 +8,34 @@ import { DUMMY_USERS } from '../dummy-users';
 })
 export class UserComponent {
 
-  @Input() avatar!: string;
-  @Input() name!: string;
+  // NOTE: Decorator Approach. Call the values by their property name in the component.html
+  @Input({required: true}) avatar!: string;
+  @Input({required: true}) name!: string;
+  @Input({required: true}) id!: string;
+  @Output() select = new EventEmitter();
 
-  // selectedUser = signal(DUMMY_USERS[randomIndex]) 
+  // using the output() function
+  // select = output<string>();
 
-  // imagePath = computed(() => 'users/' + this.selectedUser().avatar)
-
+  // getter
   get imagePath() {
     return 'users/' + this.avatar;
   }
 
   onSelectUser () {
-    // const randomIndex = Math.floor(Math.random() * DUMMY_USERS.length);
-    // this.selectedUser.set(DUMMY_USERS[randomIndex])
+    this.select.emit(this.id)
   } 
+  
+  // NOTE: This is a Signal Approach for accepting component inputs. Call the values as functions in the component.html
+  // to use the property, declare it by property() and it requires a value and data type
+  // avatar = input.required<string>();
+  // name = input.required<string>();
+ 
+  // this is computed signal, declare it as a function to read that signal value
+  // imagePath = computed(() => {
+  //   return 'users/' + this.avatar()
+  // });
+
+  
 
 }
