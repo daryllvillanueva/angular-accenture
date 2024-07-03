@@ -1,17 +1,24 @@
 import { Component, EventEmitter, Input, Output, computed, input, signal, output} from '@angular/core';
 
+import { User } from './user.model';
+
 @Component({
   selector: 'app-user',
   standalone: true,
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
+
 export class UserComponent {
 
   // NOTE: Decorator Approach. Call the values by their property name in the component.html
-  @Input({required: true}) avatar!: string;
-  @Input({required: true}) name!: string;
-  @Input({required: true}) id!: string;
+  // object type
+  @Input({required: true}) user!: User;
+  @Input({required: true}) selected: boolean = false;
+  
+  // @Input({required: true}) avatar!: string;
+  // @Input({required: true}) name!: string;
+  // @Input({required: true}) id!: string;
   @Output() select = new EventEmitter();
 
   // using the output() function
@@ -19,11 +26,11 @@ export class UserComponent {
 
   // getter
   get imagePath() {
-    return 'users/' + this.avatar;
+    return 'users/' + this.user.avatar;
   }
 
   onSelectUser () {
-    this.select.emit(this.id)
+    this.select.emit(this.user.id)
   } 
   
   // NOTE: This is a Signal Approach for accepting component inputs. Call the values as functions in the component.html
